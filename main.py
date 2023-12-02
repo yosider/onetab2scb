@@ -27,8 +27,11 @@ out_path = root / args.output
 with in_path.open() as f:
     lines = f.readlines()
 
-# make pages per 500 lines
-line_chunks = [lines[i : i + 500] for i in range(0, len(lines), 500)]
+# create pages
+line_chunks = [
+    lines[i : i + args.num_line_per_page]
+    for i in range(0, len(lines), args.num_line_per_page)
+]
 data = {
     "pages": [
         {

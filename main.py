@@ -1,27 +1,23 @@
 import argparse
 import json
-import os
 from pathlib import Path
 
-from dotenv import load_dotenv
 
 parser = argparse.ArgumentParser()
-parser.add_argument("filename", help="OneTab export file name")
+parser.add_argument("filepath", help="OneTab export file path")
 parser.add_argument(
-    "-o",
-    "--output",
-    default="import.json",
+    "-o", "--output",
+    default="import.json", type=str,
     help="Output file name (saved in the same directory as the input file)",
 )
 parser.add_argument(
-    "--num_line_per_page", default=400, type=int, help="Number of lines per page"
+    "-n", "--num_line_per_page",
+    default=400, type=int, help="Number of lines per page",
 )
 args = parser.parse_args()
 
-load_dotenv()
-
-root = Path(os.getenv("ROOT_PATH"))
-in_path = root / args.filename
+in_path = Path(args.filepath)
+root = in_path.parent
 out_path = root / args.output
 
 with in_path.open() as f:

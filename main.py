@@ -32,15 +32,15 @@ line_chunks = [
     lines[i : i + args.num_line_per_page]
     for i in range(0, len(lines), args.num_line_per_page)
 ]
+titles = [f"{in_path.stem} - {i + 1}" for i in range(len(line_chunks))]
 data = {
     "pages": [
-        {
-            "title": f"{in_path.stem} - {i}",
-            "lines": chunk,
-        }
-        for i, chunk in enumerate(line_chunks)
-    ]
-}
+    {
+        "title": title,
+        "lines": [title] + chunk + [""],  # add title line at the beginning & empty line at the end
+    }
+    for title, chunk in zip(titles, line_chunks)
+]}
 
 with out_path.open("w") as f:
     json.dump(data, f, indent=2)
